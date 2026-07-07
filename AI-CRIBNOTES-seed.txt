@@ -1,0 +1,77 @@
+AI-CRIBNOTES seed (project-agnostic template for any codebase)
+
+Purpose
+Living, token-efficient, first-principles knowledge base for an AI agent that maintains and improves a project over time. Grows iteratively: every code change, operator report, log pattern, human prompt, or external research that reveals a new gotcha, edge case, or better pattern is evaluated and (if it survives the rules) memorialized here or in a linked sub-structure. Plant a copy (adapted) in any repo to give the agent consistent scaffolding. Keep the core rules stable; add only project-specific facts, mappings, and captured intel in clearly marked sections.
+
+Core Rules (non-negotiable, apply to every session)
+- First-principles root cause + minimal diffs that match existing style and reuse established paths (orchestrator, check, pipeline, etc.).
+- Every touched file receives the project's chosen copyright / license header with correct year logic (new files = current year only; edits append current year if missing; never duplicate years; replace any other license text). Define the exact header text + placement rules once for the project.
+- Add or extend tests so the project's test command passes cleanly after every change.
+- Behavior, playbook, or user-facing changes require corresponding updates to man pages / docs / manuals / examples + index maintenance so routing stays accurate.
+- Bump the project's version/rev marker (e.g. VERIFY_REV, CHANGELOG, or equivalent) when harness manifest, expectations, or evidence layout change.
+- Risky, not-yet-safe, RFIM-dependent, or broad-scope items go only in future-todo.md (never expand prompt or core logic unilaterally).
+- Respect .gitignore strictly — never propose or perform git add/commit of operator-local artifacts (dbs, scratch dirs, raw report files, logs). Add new output globs to .gitignore as soon as the code produces them.
+- End every session with small logical git commits (imperative subject) for completed work. Never end mid-change.
+- Human-initiated learning only: the agent does not auto-scan directories or process report groups unless explicitly instructed ("analyze this group", "process next unarchived group", or given a specific file). Token cost of learning is a human decision.
+
+Learning / Analysis Workflow (for any collection of report-style files: *-observe-*.md, *-problem-*.md, *-health-*.md, etc.)
+Process exactly one group per session.
+- Discover unarchived report files via tools.
+- Cluster by report kind (or equivalent project concept) + relevant section/daemon/component.
+- Within each kind: subgroup by byte-identical content (md5sum via tool); select the newest file as representative.
+- Analyze only the representative. Extract genuine new learnings that justify changes under the Core Rules above.
+- If the log reveals no meaningful new learnings that survive the rules: state directly + explain why the current implementation already handles the observed situation robustly. Do not invent work.
+- Every insight must produce at least one concrete, minimal, testable deliverable (unified diff or precise edit instruction, new/extended test, doc/man page wording, or knowledge capture entry).
+- After human review/approval of proposals: apply changes with tools (edit_file, write_file), run the project's test command to verify, perform small logical git commits, then bulk-archive the entire group (representative + all byte-identical siblings) to an archive/ directory. Keep non-identical siblings only if they reflect materially different tool versions or outcomes; otherwise archive them too with a one-line note.
+- Record negative learnings / confirmed-stable behaviors when observed — this prevents wasteful re-analysis in future sessions.
+
+Knowledge Capture Rule (grows the seed)
+Any insight, pattern, edge case, config subtlety, failure mode, or expert-only gotcha surfaced by:
+- operator report / log analysis
+- code review or diff
+- human prompt
+- web research or external source (use tools when the log hints at unclear behavior)
+must be evaluated for memorialization. If it would help future agent runs or human operators avoid surprise or repeat work, propose a concise addition to this file (or ai-knowledgebase/ subdir + INDEX.md). Capture the minimal facts + rationale + cross-reference to source report or commit. Goal: convert one-off expert knowledge into reusable checks, alarm bells, playbooks, or test cases over time.
+
+Bootstrapping a New Project (first actions when planting this seed)
+1. Place this seed file into the repo (root or .grok/ directory) and rename/adapt as needed.
+2. Use tools to explore: ls key directories, read README, main entry point(s), test harness / Makefile / prove equivalent, .gitignore, existing docs or man pages, copyright header style in source files.
+3. Define the project-specific equivalents once:
+   - Report file naming convention and "kind" taxonomy
+   - Test command (e.g. prove -Ilib t/*.t or equivalent)
+   - Copyright header template text + exact placement rules (after shebang, after package, before .Dd, etc.)
+   - Location of manuals / docs / examples and their index file
+   - Harness / verify script and what triggers a rev bump
+   - Any project-specific "future-todo" or "risky" marker file
+4. Create minimal "Project Facts" section in this file (or a linked sub-file) with the mappings above.
+5. Ensure future-todo.md and archive/ directory exist; update .gitignore for local artifacts if missing.
+6. On the first real change or analysis session, run the full Core Rules checklist explicitly.
+
+Analysis Session Output Format (strict — output exactly these sections when analyzing a group; nothing else)
+1. Session Summary
+   2-6 bullets: what the group exercised + key real-world outcome or pain point observed.
+
+2. Key Learnings / Patterns
+   - Bullets only: new insights from this run that are not yet reflected in code, tests, or docs (tied to observed behavior).
+
+3. Proposed Changes
+   Numbered list, one per change:
+   - One sentence describing the improvement + why it matters (direct tie to log data).
+   - Implementation: unified diff snippet, exact file + edit description, new test case, man page wording, or manual section addition.
+   - Category: [Immediate] | [Next Iteration] | [Architectural Refactor] (latter only with strong justification; start broad items in future-todo.md).
+   - Estimated impact (reliability, clarity, coverage, maintenance, operator safety, etc.).
+
+4. Questions for User
+   Numbered list of decisions/tradeoffs/priorities needing human judgment (with options + brief pros/cons grounded in the observed data). Or exact string: "No decisions required — ready to implement the changes above after your review."
+
+5. Knowledge Integration
+   - Bullets: suggested additions or updates to this file, future-todo.md, manuals/, prompt templates, or ai-knowledgebase/ so future sessions benefit automatically.
+   - If relevant: improvements to how report files are generated or structured by the project itself.
+   - If relevant: new corner cases or regress test ideas.
+
+6. Status
+   One line only: "Analysis complete. Awaiting direction on questions/changes." OR "No significant new changes recommended from this session under the Core Rules."
+
+Always use tools for accuracy (read_file before proposing diffs, bash for md5sum / test runs / git / mv / archiving, web_search / browse_page only when a log surfaces unclear behavior worth clarifying for capture).
+
+This seed is deliberately minimal and stable. Project-specific sections (facts, gotchas, mappings, captured intel) are added below or in sub-files as the project evolves. The rules above remain the invariant contract for agent behavior across all projects.
