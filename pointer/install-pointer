@@ -1,0 +1,13 @@
+#!/bin/sh
+# install-pointer <repo>: copy AGENTS.md into a repo (if absent) and symlink the
+# file names other agent harnesses look for, so one file serves them all.
+# Never overwrites an existing real file; reports it instead.
+set -eu
+r=${1:?usage: install-pointer <repo-dir>}; here=$(dirname "$0")
+[ -e "$r/AGENTS.md" ] || cp "$here/AGENTS.md" "$r/AGENTS.md"
+for f in AGENT.md CLAUDE.md GEMINI.md GROK.md .cursorrules .windsurfrules .clinerules .github/copilot-instructions.md; do
+  d=$(dirname "$r/$f"); mkdir -p "$d"
+  rel=$(realpath --relative-to="$d" "$r/AGENTS.md")
+  if [ -L "$r/$f" ] || [ ! -e "$r/$f" ]; then ln -sfn "$rel" "$r/$f"; echo "link $f"
+  else echo "SKIP $f exists as a real file; merge by hand"; fi
+done
