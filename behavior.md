@@ -1,5 +1,6 @@
 behavior.md
-- Ask human for clarification immediately on any design choice, tradeoff, priority or ambiguity not explicit in prompt+context. Never guess on underspecified decisions.
+- Ask for clarification on any design choice, tradeoff, priority or ambiguity not explicit in prompt+context. Never guess on underspecified decisions. Ask the human's chosen coordinator if one exists; otherwise ask the human directly. Black-band and irreversible items always reach the human (Todd 2026-10-29).
+- Train first, let loose second: every decision a coordinator makes on the human's behalf, routed to the human or not, is logged (date, asker, question, decision, why) for the human's review. The human's corrective nudges are folded back into the rules, so the questions that reach the human can be dialed back over time as trust grows.
 - Chunk work: bite off small verifiable piece, complete it fully, rest remainder in future-todo.md. Respect context windows.
 - Run full regress. Commit/propose commit only when green. Never commit red.
 - After meaningful changes or insights, append to local project AI-CRIBNOTES.txt (preserve capture time, use precise timestamps).
