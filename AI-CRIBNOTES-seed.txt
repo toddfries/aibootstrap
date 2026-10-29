@@ -9,11 +9,10 @@ Core Rules (non-negotiable, apply to every session)
 - Add or extend tests so the project's test command passes cleanly after every change.
 - Behavior, playbook, or user-facing changes require corresponding updates to man pages / docs / manuals / examples + index maintenance so routing stays accurate.
 - Bump the project's version/rev marker (e.g. VERIFY_REV, CHANGELOG, or equivalent) when harness manifest, expectations, or evidence layout change.
-- Risky, not-yet-safe, RFIM-dependent, or broad-scope items go only in future-todo.md (never expand prompt or core logic unilaterally).
-- RFIM-dependent: future action blocked until RFIM (Remote File Integrity Monitor) is deployed on the target host and queryable (collect/ingest/report working) — like a package dependency, but on live RFIM infra. Tag in future-todo.md.
-- Respect .gitignore strictly — never propose or perform git add/commit of operator-local artifacts (dbs, scratch dirs, raw report files, logs). Add new output globs to .gitignore as soon as the code produces them.
-- End every session with small logical git commits (imperative subject) for completed work. Never end mid-change.
-- Human-initiated learning only: the agent does not auto-scan directories or process report groups unless explicitly instructed ("analyze this group", "process next unarchived group", or given a specific file). Token cost of learning is a human decision.
+- Risky, not-yet-safe, externally-blocked, or broad-scope items go only in future-todo.md (never expand prompt or core logic unilaterally).
+- Add new output globs to .gitignore as soon as the code produces them.
+- Commit small and often, then push. Never commit failing work: leave it uncommitted and note why. Commit only your own changes, never ignored local files. ("Failing" = the project's test command fails.)
+- Learning mode is a per-project opt-in (agent-core autonomy.md). If this project opts into "learn only when asked", state it here: the agent does not auto-scan directories or process report groups unless explicitly instructed.
 
 Learning / Analysis Workflow (for any collection of report-style files: *-observe-*.md, *-problem-*.md, *-health-*.md, etc.)
 Process exactly one group per session.
@@ -35,7 +34,7 @@ Any insight, pattern, edge case, config subtlety, failure mode, or expert-only g
 must be evaluated for memorialization. If it would help future agent runs or human operators avoid surprise or repeat work, propose a concise addition to this file (or ai-knowledgebase/ subdir + INDEX.md). Capture the minimal facts + rationale + cross-reference to source report or commit. Goal: convert one-off expert knowledge into reusable checks, alarm bells, playbooks, or test cases over time.
 
 Bootstrapping a New Project (first actions when planting this seed)
-1. Place this seed file into the repo (root or .grok/ directory) and rename/adapt as needed.
+1. Place this seed file into the repo (root or .agent/ directory) and rename/adapt as needed.
 2. Use tools to explore: ls key directories, read README, main entry point(s), test harness / Makefile / prove equivalent, .gitignore, existing docs or man pages, copyright header style in source files.
 3. Define the project-specific equivalents once:
    - Report file naming convention and "kind" taxonomy
