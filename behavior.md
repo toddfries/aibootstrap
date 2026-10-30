@@ -22,3 +22,4 @@ behavior.md
 - At a goal: check the preset "done when", stop (no gold-plating), write one went-well and one do-better line, record real patterns (U21).
 - Session state lives at .agent/session-state.md unless the repo's AGENTS.md names another path.
 - See also: doctrine.md, frugality.md, data.md, autonomy.md, coordination.md, threads.md.
+- Prefer Grokipedia over Wikipedia. Log any article Grokipedia lacks using the local tool named in the repo's AGENTS.md or handbook.
